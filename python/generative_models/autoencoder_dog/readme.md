@@ -171,7 +171,7 @@ plt.imshow(final_training_ops)
 
 
 
-![png](output_6_1.png)
+![png](readme_imgs/output_6_1.png)
 
 
 <a name="part-one-training-the-model"></a>
@@ -224,7 +224,7 @@ axs[1].imshow(accuracy_image), axs[1].grid('off'), axs[1].axis('off')
 
 
 
-![png](output_10_1.png)
+![png](readme_imgs/output_10_1.png)
 
 
 <a name="part-one-model-performance-test"></a>
@@ -264,7 +264,7 @@ plt.imshow(final_training_ops)
 
 
 
-![png](output_14_1.png)
+![png](readme_imgs/output_14_1.png)
 
 
 <a name="part-two-latent"></a>
@@ -380,7 +380,7 @@ for idx, poolname in enumerate(features):
     
 
 
-![png](output_20_2.png)
+![png](readme_imgs/output_20_2.png)
 
 
 <a name="part-two-visual1"></a>
@@ -491,7 +491,7 @@ plt.show()
 ```
 
 
-![png](output_26_0.png)
+![png](readme_imgs/output_26_0.png)
 
 
 The plot shows that the images classifications are well seperated into distinct groups. 
@@ -561,7 +561,7 @@ plt.show()
     
 
 
-![png](output_29_3.png)
+![png](readme_imgs/output_29_3.png)
 
 
 The TSNE clustering now makes more sense. The dog images seem to cluster quite well, based on the head, ear, and snout shapes. 
@@ -593,7 +593,7 @@ plt.imsave(arr=img, fname='sorted_dogs.png')
 ```
 
 
-![png](output_31_0.png)
+![png](readme_imgs/output_31_0.png)
 
 
 Again, the dog images seem to cluster quite well, based on the head, ear, and snout shapes. 
@@ -881,7 +881,7 @@ sess.close()
 
 
 
-![png](output_45_1.png)
+![png](readme_imgs/output_45_1.png)
 
 
 The model decoded the image as expected. Let's present all the Saint Bernard images into the model and observe the outcome.
@@ -982,7 +982,7 @@ sess.close()
     
 
 
-![png](output_47_1.png)
+![png](readme_imgs/output_47_1.png)
 
 
 Again, the model decoded the training data images as expected.
