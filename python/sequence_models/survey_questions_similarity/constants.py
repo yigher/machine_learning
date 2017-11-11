@@ -1,0 +1,12 @@
+"""constants.py"""
+MODEL_DIR = "model_files/"
+DOC2VEC_MODEL_FILE = MODEL_DIR + "/" + "DOC2VEC_MODEL.doc2vec"
+DISCRIMINATOR_MODEL_FILE = "discriminator.bin"
+SGD_FILE = MODEL_DIR+"/" + "sgd_" + DISCRIMINATOR_MODEL_FILE
+GBC_FILE = MODEL_DIR+"/" + "gbc_" + DISCRIMINATOR_MODEL_FILE
+LSTM_FILE = MODEL_DIR+"/" + "lstm_" + DISCRIMINATOR_MODEL_FILE
+LSTM_EMBEDDING_FILE = MODEL_DIR+"/" + "lstm_embeddings.npz"
+N_TOP_CLASSIFICATIONS = 2
+SGD = "sgd"
+GBC = "gbc"
+LSTM = "lstm"   
