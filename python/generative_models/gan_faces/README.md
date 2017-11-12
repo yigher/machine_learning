@@ -1707,24 +1707,8 @@ axs[1].imshow(b2[0] / b2.max()), axs[1].set_title('Not Male'), axs[1].grid('off'
 axs[2].imshow(b3[0] / b3.max()), axs[2].set_title('Smiling'), axs[2].grid('off'), axs[2].axis('off')
 axs[3].imshow(b4[0] / b4.max()), axs[3].set_title('Not Smiling'), axs[3].grid('off'), axs[3].axis('off')
 ```
-
-
-
-
-    (<matplotlib.image.AxesImage at 0x7f948ca6e3c8>,
-     <matplotlib.text.Text at 0x7f948ca4aa20>,
-     None,
-     (-0.5, 99.5, 99.5, -0.5))
-
-
-
-
 ![png](readme_imgs/output_145_1.png)
-
-
 Now let's interpolate between the "Male" and "Not Male" categories:
-
-
 ```python
 notmale_vector = z2 - z1
 n_imgs = 5
@@ -1732,8 +1716,6 @@ amt = np.linspace(0, 1, n_imgs)
 zs = np.array([z1 + notmale_vector*amt_i for amt_i in amt])
 g = sess.run(G, feed_dict={Z: zs})
 ```
-
-
 ```python
 fig, axs = plt.subplots(1, n_imgs, figsize=(20, 4))
 for i, ax_i in enumerate(axs):
@@ -1741,14 +1723,8 @@ for i, ax_i in enumerate(axs):
     ax_i.grid('off')
     ax_i.axis('off')
 ```
-
-
 ![png](readme_imgs/output_148_0.png)
-
-
 And the same for smiling:
-
-
 ```python
 smiling_vector = z3 - z4
 amt = np.linspace(0, 1, n_imgs)
@@ -1814,11 +1790,7 @@ for i, ax_i in enumerate(axs):
     ax_i.grid('off')
     ax_i.axis('off')
 ```
-
-
 ![png](readme_imgs/output_155_0.png)
-
-
 It's certainly worth trying especially if you are looking to explore your own model's latent space in new and interesting ways.
 
 Let's try and load an image that we want to play with.  We need an image as similar to the Celeb Dataset as possible.  Unfortunately, we don't have access to the algorithm they used to "align" the faces, so we'll need to try and get as close as possible to an aligned face image.  One way you can do this is to load up one of the celeb images and try and align an image to it using e.g. Photoshop or another photo editing software that lets you blend and move the images around.  That's what I did for my own face...
@@ -1842,37 +1814,18 @@ fig, axs = plt.subplots(1, 2, figsize=(10, 5))
 axs[0].imshow(img[0]), axs[0].grid('off')
 axs[1].imshow(np.clip(img_[0] / np.max(img_), 0, 1)), axs[1].grid('off')
 ```
-
-
-
-
-    (<matplotlib.image.AxesImage at 0x7f948baf7390>, None)
-
-
-
-
 ![png](readme_imgs/output_159_1.png)
-
-
 Notice how blurry the image is.  Tom White's preprint suggests one way to sharpen the image is to find the "Blurry" attribute vector:
-
-
 ```python
 z1 = get_features_for('Blurry', True, n_imgs=25)
 z2 = get_features_for('Blurry', False, n_imgs=25)
 unblur_vector = z2 - z1
 ```
-
     /home/ubuntu/.local/lib/python3.5/site-packages/skimage/transform/_warps.py:84: UserWarning: The default mode, 'constant', will be changed to 'reflect' in skimage 0.15.
-      warn("The default mode, 'constant', will be changed to 'reflect' in "
-    
-
-
+      warn("The default mode, 'constant', will be changed to 'reflect' in "    
 ```python
 z = sess.run(Z, feed_dict={X: img})
 ```
-
-
 ```python
 n_imgs = 5
 amt = np.linspace(0, 1, n_imgs)
@@ -1884,14 +1837,8 @@ for i, ax_i in enumerate(axs):
     ax_i.grid('off')
     ax_i.axis('off')
 ```
-
-
 ![png](readme_imgs/output_163_0.png)
-
-
 Notice that the image also gets brighter and perhaps other features than simply the bluriness of the image changes.  Tom's preprint suggests that this is due to the correlation that blurred images have with other things such as the brightness of the image, possibly due biases in labeling or how photographs are taken.   He suggests that another way to unblur would be to synthetically blur a set of images and find the difference in the encoding between the real and blurred images.  We can try it like so:
-
-
 ```python
 from scipy.ndimage import gaussian_filter
 
@@ -1904,8 +1851,6 @@ for img_i in imgs:
         img_copy[..., ch_i] = gaussian_filter(img_i[..., ch_i], sigma=3.0)
     blurred.append(img_copy)
 ```
-
-
 ```python
 # Now let's preprocess the original images and the blurred ones
 imgs_p = np.array([CV.preprocess(img_i) for img_i in imgs])
@@ -1915,17 +1860,11 @@ blur_p = np.array([CV.preprocess(img_i) for img_i in blurred])
 noblur = sess.run(Z, feed_dict={X: imgs_p})
 blur = sess.run(Z, feed_dict={X: blur_p})
 ```
-
     /home/ubuntu/.local/lib/python3.5/site-packages/skimage/transform/_warps.py:84: UserWarning: The default mode, 'constant', will be changed to 'reflect' in skimage 0.15.
       warn("The default mode, 'constant', will be changed to 'reflect' in "
-    
-
-
 ```python
 synthetic_unblur_vector = np.mean(noblur - blur, 0)
 ```
-
-
 ```python
 n_imgs = 5
 amt = np.linspace(0, 1, n_imgs)
@@ -1937,30 +1876,18 @@ for i, ax_i in enumerate(axs):
     ax_i.grid('off')
     ax_i.axis('off')
 ```
-
-
 ![png](readme_imgs/output_168_0.png)
-
-
 For some reason, it also doesn't like my glasses very much.  Let's try and add them back.
-
-
 ```python
 z1 = get_features_for('Eyeglasses', True)
 z2 = get_features_for('Eyeglasses', False)
 glass_vector = z1 - z2
 ```
-
     /home/ubuntu/.local/lib/python3.5/site-packages/skimage/transform/_warps.py:84: UserWarning: The default mode, 'constant', will be changed to 'reflect' in skimage 0.15.
       warn("The default mode, 'constant', will be changed to 'reflect' in "
-    
-
-
 ```python
 z = sess.run(Z, feed_dict={X: img})
 ```
-
-
 ```python
 n_imgs = 5
 amt = np.linspace(0, 1, n_imgs)
@@ -1972,14 +1899,8 @@ for i, ax_i in enumerate(axs):
     ax_i.grid('off')
     ax_i.axis('off')
 ```
-
-
 ![png](readme_imgs/output_172_0.png)
-
-
 Well, more like sunglasses then.  Let's try adding everything in there now!
-
-
 ```python
 n_imgs = 5
 amt = np.linspace(0, 1.0, n_imgs)
@@ -1991,14 +1912,8 @@ for i, ax_i in enumerate(axs):
     ax_i.grid('off')
     ax_i.axis('off')
 ```
-
-
 ![png](readme_imgs/output_174_0.png)
-
-
 Well it was worth a try anyway.  We can also try with a lot of images and create a gif montage of the result:
-
-
 ```python
 n_imgs = 5
 amt = np.linspace(0, 1.5, n_imgs)
@@ -2010,40 +1925,19 @@ for amt_i in amt:
     m = utils.montage(np.clip(g, 0, 1))
     imgs.append(m)
 ```
-
-
 ```python
 import imageio
 imageio.mimsave('celeb.gif', imgs)
 ```
-
-    /home/ubuntu/.local/lib/python3.5/site-packages/imageio/core/util.py:78: UserWarning: Lossy conversion from float64 to uint8, range [0, 1]
-      dtype_str, out_type.__name__))
-    
-
-
 ```python
 ipyd.Image(url='celeb.gif?i={}'.format(
         np.random.rand()), height=1000, width=1000)
 ```
-
-
-
-
 <img src="celeb.gif?i=0.7070193762216292" width="1000" height="1000"/>
-
-
-
 Exploring multiple feature vectors and applying them to images from the celeb dataset to produce animations of a face, saving it as a GIF.  Recall you can store each image frame in a list and then use the `gif.build_gif` function to create a gif.  Explore your own syntheses and then include a gif of the different images you create as "celeb.gif" in the final submission.  Perhaps try finding unexpected synthetic latent attributes in the same way that we created a blur attribute.  You can check the documentation in scipy.ndimage for some other image processing techniques, for instance: http://www.scipy-lectures.org/advanced/image_processing/ - and see if you can find the encoding of another attribute that you then apply to your own images.  You can even try it with many images and use the `utils.montage` function to create a large grid of images that evolves over your attributes.  Or create a set of expressions perhaps.  Up to you just explore!
 
-
-
-
 <h3><font color='red'>TODO! COMPLETE THIS SECTION!</font></h3>
-
 The objective is to transition unsmiling images to Young, Attractive and Smiling images, followed by Grey, Chubby, Unsmiling with Eye Bags
-
-
 ```python
 # Obtain first 100 unsmiling images
 label_unsmile_i = net['labels'].index('Smiling')
@@ -2054,7 +1948,6 @@ imgs_unsmile = [plt.imread(files[img_i])[..., :3]
 
 x = np.array(imgs_unsmile)
 x = np.array([CV.preprocess(img_i) for img_i in imgs_unsmile])
-
 # Unblur the images
 idxs = np.random.permutation(range(len(files)))
 imgs = imgs_unsmile
@@ -2067,7 +1960,6 @@ for img_i in imgs:
 # Now let's preprocess the original images and the blurred ones
 imgs_p = np.array([CV.preprocess(img_i) for img_i in imgs])
 blur_p = np.array([CV.preprocess(img_i) for img_i in blurred])
-
 # And then compute each of their latent features
 noblur = sess.run(Z, feed_dict={X: imgs_p})
 blur = sess.run(Z, feed_dict={X: blur_p})
@@ -2125,14 +2017,7 @@ b_grey = sess.run(G, feed_dict={Z: z_grey[np.newaxis]})
 b_ungrey = sess.run(G, feed_dict={Z: z_ungrey[np.newaxis]})
 b_bag =  sess.run(G, feed_dict={Z: z_bag[np.newaxis]})
 ```
-
-    C:\Users\eutan\Anaconda3\lib\site-packages\skimage\transform\_warps.py:84: UserWarning: The default mode, 'constant', will be changed to 'reflect' in skimage 0.15.
-      warn("The default mode, 'constant', will be changed to 'reflect' in "
-    
-
 Plot the reconstructed latent information of Smile, Attractive, Young, Chubby and Grey
-
-
 ```python
 fig, axs = plt.subplots(1, 11, figsize=(15, 6))
 axs[0].imshow(b_smile[0] / b_smile.max()), axs[0].set_title('Smile'), axs[0].grid('off'), axs[0].axis('off')
@@ -2147,29 +2032,12 @@ axs[8].imshow(b_grey[0] / b_grey.max()), axs[8].set_title('Grey'), axs[8].grid('
 axs[9].imshow(b_ungrey[0] / b_ungrey.max()), axs[9].set_title('Not Grey'), axs[9].grid('off'), axs[9].axis('off')
 axs[10].imshow(b_bag[0] / b_bag.max()), axs[10].set_title('Eye Bag'), axs[10].grid('off'), axs[10].axis('off')
 ```
-
-
-
-
-    (<matplotlib.image.AxesImage at 0x15c034aab70>,
-     <matplotlib.text.Text at 0x15c03476ba8>,
-     None,
-     (-0.5, 99.5, 99.5, -0.5))
-
-
-
-
 ![png](readme_imgs/output_183_1.png)
-
-
 Now synthesize the images from young and attractive, to grey and chubby
-
-
 ```python
 n_imgs = 20
 amt = np.linspace(0, 1.5, n_imgs)
 z = sess.run(Z, feed_dict={X: x})
-
 imgs = []
 for amt_i in amt:
     zs = z + synthetic_unblur_vector * amt_i + amt_i * smile_vector + amt_i * attractive_vector
@@ -2183,25 +2051,12 @@ for amt_i in amt:
     m = utils.montage(np.clip(g, 0, 1))
     imgs.append(m)
 ```
-
 Create the gif
-
-
 ```python
 import imageio
 imageio.mimsave("vaegan.gif", imgs)
 ipyd.Image(url='vaegan.gif?i={}'.format(
             np.random.rand()), height=1000, width=1000)
 ```
-
-
-
-
 <img src="vaegan.gif?i=0.9769104786044496" width="1000" height="1000"/>
-
-
-
 <a name="part-4---character-level-recurrent-neural-network"></a>
-# Part 4 - Character Level Recurrent Neural Network
-
-Please visit [session-5-part2.ipynb](session-5-part2.ipynb) for the rest of the homework!
