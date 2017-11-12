@@ -1959,6 +1959,7 @@ for img_i in imgs:
     blurred.append(img_copy)
 ```
 # Now let's preprocess the original images and the blurred ones
+```python
 imgs_p = np.array([CV.preprocess(img_i) for img_i in imgs])
 blur_p = np.array([CV.preprocess(img_i) for img_i in blurred])
 # And then compute each of their latent features
