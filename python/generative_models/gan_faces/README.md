@@ -1957,6 +1957,7 @@ for img_i in imgs:
     for ch_i in range(3):
         img_copy[..., ch_i] = gaussian_filter(img_i[..., ch_i], sigma=3.0)
     blurred.append(img_copy)
+```
 # Now let's preprocess the original images and the blurred ones
 imgs_p = np.array([CV.preprocess(img_i) for img_i in imgs])
 blur_p = np.array([CV.preprocess(img_i) for img_i in blurred])
