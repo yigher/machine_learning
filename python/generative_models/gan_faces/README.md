@@ -734,15 +734,6 @@ while epoch_i < n_epochs:
                                write_meta_graph=False)
         print("Model saved in file: %s" % save_path)
 ```
-![png](readme_imgs/output_50_1.png)
-![png](readme_imgs/output_50_3.png)
-![png](readme_imgs/output_50_5.png)
-![png](readme_imgs/output_50_7.png)
-![png](readme_imgs/output_50_9.png)
-![png](readme_imgs/output_50_11.png)
-![png](readme_imgs/output_50_13.png)
-![png](readme_imgs/output_50_15.png)
-![png](readme_imgs/output_50_17.png)
 ![png](readme_imgs/output_50_19.png)
 
 
