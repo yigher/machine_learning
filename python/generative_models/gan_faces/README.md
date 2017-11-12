@@ -782,117 +782,15 @@ In order for us to use batch normalization, we need another placeholder which is
 # placeholder for batch normalization
 is_training = tf.placeholder(tf.bool, name='istraining')
 ```
-
 The original paper that introduced the idea suggests to use batch normalization "pre-activation", meaning after the weight multipllication or convolution, and before the nonlinearity.  We can use the `tensorflow.contrib.layers.batch_norm` module to apply batch normalization to any input tensor give the tensor and the placeholder defining whether or not we are training.  Let's use this module and you can inspect the code inside the module in your own time if it interests you.
-
-
 ```python
 from tensorflow.contrib.layers import batch_norm
 help(batch_norm)
 ```
-
-    Help on function batch_norm in module tensorflow.contrib.framework.python.ops.arg_scope:
-    
-    batch_norm(inputs, decay=0.999, center=True, scale=False, epsilon=0.001, activation_fn=None, param_initializers=None, param_regularizers=None, updates_collections='update_ops', is_training=True, reuse=None, variables_collections=None, outputs_collections=None, trainable=True, batch_weights=None, fused=False, data_format='NHWC', zero_debias_moving_mean=False, scope=None, renorm=False, renorm_clipping=None, renorm_decay=0.99)
-        Adds a Batch Normalization layer from http://arxiv.org/abs/1502.03167.
-        
-          "Batch Normalization: Accelerating Deep Network Training by Reducing
-          Internal Covariate Shift"
-        
-          Sergey Ioffe, Christian Szegedy
-        
-        Can be used as a normalizer function for conv2d and fully_connected.
-        
-        Note: when training, the moving_mean and moving_variance need to be updated.
-        By default the update ops are placed in `tf.GraphKeys.UPDATE_OPS`, so they
-        need to be added as a dependency to the `train_op`. For example:
-        
-        ```python
-          update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
-          with tf.control_dependencies(update_ops):
-            train_op = optimizer.minimize(loss)
-        ```
-        
-        One can set updates_collections=None to force the updates in place, but that
-        can have a speed penalty, especially in distributed settings.
-        
-        Args:
-          inputs: A tensor with 2 or more dimensions, where the first dimension has
-            `batch_size`. The normalization is over all but the last dimension if
-            `data_format` is `NHWC` and the second dimension if `data_format` is
-            `NCHW`.
-          decay: Decay for the moving average. Reasonable values for `decay` are close
-            to 1.0, typically in the multiple-nines range: 0.999, 0.99, 0.9, etc.
-            Lower `decay` value (recommend trying `decay`=0.9) if model experiences
-            reasonably good training performance but poor validation and/or test
-            performance. Try zero_debias_moving_mean=True for improved stability.
-          center: If True, add offset of `beta` to normalized tensor. If False, `beta`
-            is ignored.
-          scale: If True, multiply by `gamma`. If False, `gamma` is
-            not used. When the next layer is linear (also e.g. `nn.relu`), this can be
-            disabled since the scaling can be done by the next layer.
-          epsilon: Small float added to variance to avoid dividing by zero.
-          activation_fn: Activation function, default set to None to skip it and
-            maintain a linear activation.
-          param_initializers: Optional initializers for beta, gamma, moving mean and
-            moving variance.
-          param_regularizers: Optional regularizer for beta and gamma.
-          updates_collections: Collections to collect the update ops for computation.
-            The updates_ops need to be executed with the train_op.
-            If None, a control dependency would be added to make sure the updates are
-            computed in place.
-          is_training: Whether or not the layer is in training mode. In training mode
-            it would accumulate the statistics of the moments into `moving_mean` and
-            `moving_variance` using an exponential moving average with the given
-            `decay`. When it is not in training mode then it would use the values of
-            the `moving_mean` and the `moving_variance`.
-          reuse: Whether or not the layer and its variables should be reused. To be
-            able to reuse the layer scope must be given.
-          variables_collections: Optional collections for the variables.
-          outputs_collections: Collections to add the outputs.
-          trainable: If `True` also add variables to the graph collection
-            `GraphKeys.TRAINABLE_VARIABLES` (see `tf.Variable`).
-          batch_weights: An optional tensor of shape `[batch_size]`,
-            containing a frequency weight for each batch item. If present,
-            then the batch normalization uses weighted mean and
-            variance. (This can be used to correct for bias in training
-            example selection.)
-          fused:  Use nn.fused_batch_norm if True, nn.batch_normalization otherwise.
-          data_format: A string. `NHWC` (default) and `NCHW` are supported.
-          zero_debias_moving_mean: Use zero_debias for moving_mean. It creates a new
-            pair of variables 'moving_mean/biased' and 'moving_mean/local_step'.
-          scope: Optional scope for `variable_scope`.
-          renorm: Whether to use Batch Renormalization
-            (https://arxiv.org/abs/1702.03275). This adds extra variables during
-            training. The inference is the same for either value of this parameter.
-          renorm_clipping: A dictionary that may map keys 'rmax', 'rmin', 'dmax' to
-            scalar `Tensors` used to clip the renorm correction. The correction
-            `(r, d)` is used as `corrected_value = normalized_value * r + d`, with
-            `r` clipped to [rmin, rmax], and `d` to [-dmax, dmax]. Missing rmax, rmin,
-            dmax are set to inf, 0, inf, respectively.
-          renorm_decay: Momentum used to update the moving means and standard
-            deviations with renorm. Unlike `momentum`, this affects training
-            and should be neither too small (which would add noise) nor too large
-            (which would give stale estimates). Note that `decay` is still applied
-            to get the means and variances for inference.
-        
-        Returns:
-          A `Tensor` representing the output of the operation.
-        
-        Raises:
-          ValueError: If `batch_weights` is not None and `fused` is True.
-          ValueError: If `param_regularizers` is not None and `fused` is True.
-          ValueError: If `data_format` is neither `NHWC` nor `NCHW`.
-          ValueError: If the rank of `inputs` is undefined.
-          ValueError: If rank or channels dimension of `inputs` is undefined.
-    
-    
-
 <a name="building-the-encoder-1"></a>
 ## Building the Encoder
 
 We can now change our encoder to accept the `is_training` placeholder and apply `batch_norm` just before the activation function is applied:
-
 
 ```python
 def encoder(x, is_training, channels, filter_sizes, activation=tf.nn.tanh, reuse=None):
