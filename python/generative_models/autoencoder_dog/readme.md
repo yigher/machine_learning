@@ -1082,7 +1082,7 @@ ipyd.Image(url='montage_goyte.gif?i={}'.format(
         np.random.rand()), height=400, width=400)
 ```
 
-<img src="montage_goyte.gif" height="500"/>
+<img src="montage_goyte.gif" height="250"/>
 
 <a name="part-three-apply2"></a>
 ## Explore Model's Effectiveness Reconstructing Dog Images
