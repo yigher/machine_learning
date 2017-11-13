@@ -769,11 +769,11 @@ Below is a time lapse of the reconstructed images for the training of the model.
 
 
 ```python
-ipyd.Image(url='montage_train.gif?i={}'.format(
+ipyd.Image(url='out_imgs/montage_train.gif?i={}'.format(
         np.random.rand()), height=1500, width=1500)
 ```
 
-![gif1|1500X1500](montage_train.gif)
+![gif1|1500X1500](out_imgs/montage_train.gif)
 
 <a name="part-three-apply1"></a>
 ## Explore Style Transfer
@@ -1077,12 +1077,12 @@ montage = []
 for img, recon in zip(imgs, recon):
     img_all = np.hstack((img, recon))
     montage.append(img_all)
-imageio.mimsave('montage_goyte.gif', montage)
-ipyd.Image(url='montage_goyte.gif?i={}'.format(
+imageio.mimsave('out_imgs/montage_goyte.gif', montage)
+ipyd.Image(url='out_imgs/montage_goyte.gif?i={}'.format(
         np.random.rand()), height=400, width=400)
 ```
 
-<img src="montage_goyte.gif" height="250"/>
+<img src="out_imgs/montage_goyte.gif" height="250"/>
 
 <a name="part-three-apply2"></a>
 ## Explore Model's Effectiveness Reconstructing Dog Images
@@ -1178,43 +1178,11 @@ montage = []
 for img, recon in zip(imgs, recons):
     img_all = np.hstack((img, recon))
     montage.append(img_all)
-imageio.mimsave('montage_dog.gif', montage)
-ipyd.Image(url='montage_dog.gif?i={}'.format(
+imageio.mimsave('out_imgs/montage_dog.gif', montage)
+ipyd.Image(url='out_imgs/montage_dog.gif?i={}'.format(
         np.random.rand()), height=400, width=400)
 ```
 
-<img src="montage_dog.gif" height="250"/>
+<img src="out_imgs/montage_dog.gif" height="250"/>
 
 It would seem that the model reconstructs a better dog image if the input was a close-up image of the dog. This could be due to the nature of the training data, where majority of the data was close-up images of dogs. There was probably inadequate training data for the model to create sharper dog images.
-
-
-Now let's build a submission
-
-
-```python
-utils.build_submission('final_project.zip',
-                       ('final_project.ipynb',
-                        'accuracy_1.png',
-                        'cross_entropy_1.png',
-                        'final_training_ops.png',
-                        'sorted_dogs.jpg',
-                        'test_result.png',
-                        'montage_train.gif',
-                        'montage_goyte.gif',
-                        'montage_dog.gif',
-                       'dog_vae.py',
-                       'process_images.py',
-                       'retrain.py',
-                       'label_image.py'))
-```
-
-    Your assignment zip file has been created!
-    Now submit the file:
-    C:\workspace_py\CADL\final_project\final_project.zip
-    to Kadenze for grading!
-    
-
-
-```python
-
-```
