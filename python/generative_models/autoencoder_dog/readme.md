@@ -1183,7 +1183,7 @@ ipyd.Image(url='montage_dog.gif?i={}'.format(
         np.random.rand()), height=400, width=400)
 ```
 
-<img src="montage_dog.gif" height="500"/>
+<img src="montage_dog.gif" height="250"/>
 
 It would seem that the model reconstructs a better dog image if the input was a close-up image of the dog. This could be due to the nature of the training data, where majority of the data was close-up images of dogs. There was probably inadequate training data for the model to create sharper dog images.
 
