@@ -878,11 +878,6 @@ ipyd.Image(url='montage_shoe.gif?i={}'.format(
 
 
 
-
-<img src="montage_shoe.gif?i=0.9238043609623421" width="1200" height="200"/>
-
-
-
 The network was trained 3 times over with progressively bigger networks. Below are the results:
     - Network Config: [2, 100, 100, 100, 100, 100, 50]
 
@@ -895,7 +890,7 @@ ipyd.Image(url='montage_shoe1n.gif?i={}'.format(
 
 
 
-![gif1|200X1200](out_imgs/montage_shoe1n.gif)
+![gif1|200X1200](montage_shoe1n.gif)
 
 
 
@@ -910,7 +905,7 @@ ipyd.Image(url='montage_shoe2n.gif?i={}'.format(
 
 
 
-![gif1|200X1200](out_imgs/montage_shoe2n.gif)
+![gif1|200X1200](montage_shoe2n.gif)
 
 
 
@@ -922,7 +917,7 @@ ipyd.Image(url='montage_shoe3n.gif?i={}'.format(
         np.random.rand()), height=200, width=1200)
 ```
 
-![gif1|200X1200](out_imgs/montage_shoe3n.gif)
+![gif1|200X1200](montage_shoe3n.gif)
 
 
 ```python
