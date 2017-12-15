@@ -1,5 +1,5 @@
 
-#  Image-to-Image Translation with GANs
+#  Magenta Polyphonic RNN
  
 
 # Outline
