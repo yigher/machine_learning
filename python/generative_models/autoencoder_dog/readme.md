@@ -769,8 +769,7 @@ Below is a time lapse of the reconstructed images for the training of the model.
 
 
 ```python
-ipyd.Image(url='out_imgs/montage_train.gif?i={}'.format(
-        np.random.rand()), height=1500, width=1500)
+<img src="out_imgs/montage_train.gif" height="1500"/>
 ```
 
 ![gif1|1500X1500](out_imgs/montage_train.gif)
